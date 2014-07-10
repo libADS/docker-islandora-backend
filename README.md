@@ -68,21 +68,21 @@ docker build -t dts/fedora:latest .
 Run:
 
 ```
-docker run -i -t -p 8080:8080 --link mysql:db dts/fedora:latest # foreground
-docker run -d -p 8080:8080 --link mysql:db dts/fedora:latest # background
+docker run -i -t -p 8080:8080 --name fedora --link mysql:db dts/fedora:latest # foreground
+docker run -d -p 8080:8080 --name fedora --link mysql:db dts/fedora:latest # background
 ```
 
 Run from within the container:
 
 ```
-docker run -i -t -p 8080:8080 --link mysql:db dts/fedora:latest /bin/bash
+docker run -i -t -p 8080:8080 --name fedora --link mysql:db dts/fedora:latest /bin/bash
 ./setup.sh &
 ```
 
 Overriding:
 
 ```
-docker run -i -t -p 8080:8080 --link mysql:db -e "SOLR_PREFIX=apache-solr" -e "SOLR_VERSION=3.6.2" dts/fedora:latest /bin/bash
+docker run -i -t -p 8080:8080 --name fedora --link mysql:db -e "SOLR_PREFIX=apache-solr" -e "SOLR_VERSION=3.6.2" dts/fedora:latest /bin/bash
 ```
 
 Running with provided script:
@@ -100,7 +100,7 @@ Running additional containers
 Map internal 8080 to a different host port and create a distinct database.
 
 ```
-docker run -i -t -p 8081:8080 --link mysql:db -e "MYSQL_DB=fedora1" dts/fedora:latest # foreground
+docker run -i -t -p 8081:8080 --name fedora --link mysql:db -e "MYSQL_DB=fedora1" dts/fedora:latest # foreground
 ```
 
 Test
