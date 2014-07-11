@@ -47,7 +47,7 @@ $CATALINA_HOME/bin/catalina.sh run & # set running and give some time to explode
 sleep 60
 
 # localhost only makes me sad ...
-rm $FEDORA_HOME/data/fedora-xacml-policies/repository-policies/default/deny-apim-if-not-localhost.xml
+rm $FEDORA_HOME/data/fedora-xacml-policies/repository-policies/default/deny-*
 cp /fedora-users.xml $FEDORA_HOME/server/config/fedora-users.xml
 
 # config for gsearch ...
