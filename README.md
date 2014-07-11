@@ -21,6 +21,7 @@ Using the Fedora container's default environment creates:
 
 - a database called "fedora"
 - a user called "fedora" with password "fedora"
+- drupal filter is configured with `drupal` for db, user, password
 
 These values can be overriden if preferred.
 
@@ -100,7 +101,7 @@ Running additional containers
 Map internal 8080 to a different host port and create a distinct database.
 
 ```
-docker run -i -t -p 8081:8080 --name fedora --link mysql:db -e "MYSQL_DB=fedora1" dts/fedora:latest # foreground
+docker run -i -t -p 8081:8080 --name fedora --link mysql:db -e "FEDORA_DB=fedora1" dts/fedora:latest # foreground
 ```
 
 Test

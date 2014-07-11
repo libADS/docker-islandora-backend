@@ -2,10 +2,12 @@ FROM ubuntu:latest
 
 ENV ADMIN admin
 ENV ADMIN_PASSWORD admin
-ENV MYSQL_DB fedora
-ENV MYSQL_USER fedora
-ENV MYSQL_PASSWORD fedora  
+ENV FEDORA_DB fedora
+ENV FEDORA_USER fedora
 ENV FEDORA_PASSWORD fedora
+ENV DRUPAL_DB drupal
+ENV DRUPAL_USER drupal
+ENV DRUPAL_PASSWORD drupal
 ENV SOLR_PREFIX solr
 ENV SOLR_VERSION 4.2.0
 ENV ISL_TRANSFORMS https://github.com/lyrasis/islandora_transforms

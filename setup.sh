@@ -16,24 +16,21 @@ cp /solr-iso639-filter-4.2.0.jar /solr-$SOLR_VERSION/$SOLR_PREFIX-$SOLR_VERSION/
 # making backwards compatible with 3.6.2 will require some additional configuration
 
 # SETUP DATABASE
-mysql --host=$DB_PORT_3306_TCP_ADDR --port=3306 --user=$ADMIN --password=$ADMIN_PASSWORD -e "CREATE DATABASE $MYSQL_DB default character set utf8;"
-mysql --host=$DB_PORT_3306_TCP_ADDR --port=3306 --user=$ADMIN --password=$ADMIN_PASSWORD -e "grant all on $MYSQL_DB.* to '$MYSQL_USER'@'%' identified by '$MYSQL_PASSWORD';"
+mysql --host=$DB_PORT_3306_TCP_ADDR --port=3306 --user=$ADMIN --password=$ADMIN_PASSWORD -e "CREATE DATABASE $FEDORA_DB default character set utf8;"
+mysql --host=$DB_PORT_3306_TCP_ADDR --port=3306 --user=$ADMIN --password=$ADMIN_PASSWORD -e "grant all on $FEDORA_DB.* to '$FEDORA_USER'@'%' identified by '$FEDORA_PASSWORD';"
 
 sed -i "s/!MYSQL_HOST!/$DB_PORT_3306_TCP_ADDR/g" /install.properties
-sed -i "s/!MYSQL_HOST!/$DB_PORT_3306_TCP_ADDR/g" /filter-drupal.xml
-
-sed -i "s/!MYSQL_DB!/$MYSQL_DB/g" /install.properties
-sed -i "s/!MYSQL_DB!/$MYSQL_DB/g" /filter-drupal.xml
-
-sed -i "s/!MYSQL_USER!/$MYSQL_USER/g" /install.properties
-sed -i "s/!MYSQL_USER!/$MYSQL_USER/g" /filter-drupal.xml
-
-sed -i "s/!MYSQL_PASSWORD!/$MYSQL_PASSWORD/g" /install.properties
-sed -i "s/!MYSQL_PASSWORD!/$MYSQL_PASSWORD/g" /filter-drupal.xml
-
+sed -i "s/!FEDORA_DB!/$FEDORA_DB/g" /install.properties
+sed -i "s/!FEDORA_USER!/$FEDORA_USER/g" /install.properties
 sed -i "s/!FEDORA_PASSWORD!/$FEDORA_PASSWORD/g" /install.properties
-sed -i "s/!FEDORA_PASSWORD!/$FEDORA_PASSWORD/g" /fedora-users.xml
+
 sed -i "s/!FEDORA_PASSWORD!/$FEDORA_PASSWORD/g" /fgsconfig-basic-for-islandora.properties
+sed -i "s/!FEDORA_PASSWORD!/$FEDORA_PASSWORD/g" /fedora-users.xml
+
+sed -i "s/!MYSQL_HOST!/$DB_PORT_3306_TCP_ADDR/g" /filter-drupal.xml
+sed -i "s/!DRUPAL_DB!/$DRUPAL_DB/g" /filter-drupal.xml
+sed -i "s/!DRUPAL_USER!/$DRUPAL_USER/g" /filter-drupal.xml
+sed -i "s/!DRUPAL_PASSWORD!/$DRUPAL_PASSWORD/g" /filter-drupal.xml
 
 # INSTALL FEDORA USING install.properties
 java -jar /fcrepo-installer-3.7.0.jar install.properties
