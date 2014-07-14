@@ -3,6 +3,13 @@ Docker Islandora Backend
 
 Runs Fedora, Gseach and Solr inside Tomcat in a Docker container with configuration for Islandora.
 
+Binary default versions:
+-------------------------------
+
+- Gsearch 2.6
+- Fedora 3.7.0
+- Solr 4.2.0
+
 Requirements
 ------------------
 
