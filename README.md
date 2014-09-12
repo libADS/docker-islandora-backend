@@ -10,20 +10,6 @@ Binary default versions:
 - Fedora 3.7.0
 - Solr 4.2.0
 
-Requirements
-------------------
-
-The container requires access to a linked MySQL database aliased as **db** exposing **3306**. 
-
-**Example**
-
-```
-docker run -d -p 3306:3306 --name mysql -e MYSQL_PASS="admin" tutum/mysql
-# note "as is" this command is NOT persisting data between container restarts
-```
-
-_Give the container 5+ seconds to initialize_
-
 Using the Fedora container's default environment creates:
 
 - a database called "fedora"
@@ -51,12 +37,12 @@ Passwords (defaults):
 Building a container
 --------------------------
 
-Get, build and run a MySQL container:
+Get and build a MySQL container:
 
 ```
 git clone https://github.com/tutumcloud/tutum-docker-mysql
-docker build -t tutum/mysql .
-docker run -d -p 3306:3306 --name mysql -e MYSQL_PASS="admin" tutum/mysql
+cd tutum-docker-mysql
+docker build -t tutum/mysql 5.5/
 ```
 
 Download the jars:
@@ -70,19 +56,26 @@ This greatly increases the speed of building (and particularly rebuilding) image
 Build:
 
 ```
-docker build -t islandora/backend:latest .
+./build.sh
 ```
 
-Run:
+Run (with script):
 
 ```
-docker run -i -t -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest # foreground
-docker run -d -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest # background
+./run.sh # run mysql and fedora etc. in background
 ```
 
-Run from within the container:
+Run (manually):
 
 ```
+# mysql
+docker run -d -p 3306:3306 --name mysql -e MYSQL_PASS="admin" tutum/mysql
+
+# foreground
+docker run -i -t -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest
+# background
+docker run -d -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest
+# within container
 docker run -i -t -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest /bin/bash
 ./setup.sh &
 ```
@@ -91,16 +84,6 @@ Overriding:
 
 ```
 docker run -i -t -p 8080:8080 --name fedora --link mysql:db -e "SOLR_PREFIX=apache-solr" -e "SOLR_VERSION=3.6.2" islandora/backend:latest /bin/bash
-```
-
-Running with provided script:
---------------------------------------
-
-Requires MySQL container.
-
-```
-./build.sh # build the container
-./run.sh # run mysql and fedora etc. in background
 ```
 
 Running additional containers
