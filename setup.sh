@@ -13,7 +13,6 @@ cp /solr-$SOLR_VERSION/$SOLR_PREFIX-$SOLR_VERSION/dist/$SOLR_PREFIX-$SOLR_VERSIO
 cp -R /solr-$SOLR_VERSION/$SOLR_PREFIX-$SOLR_VERSION/example/solr/* /opt/data/solr
 mkdir -p /solr-$SOLR_VERSION/$SOLR_PREFIX-$SOLR_VERSION//contrib/iso639/lib
 cp /solr-iso639-filter-4.2.0.jar /solr-$SOLR_VERSION/$SOLR_PREFIX-$SOLR_VERSION/contrib/iso639/lib/solr-iso639-filter-4.2.0.jar
-# making backwards compatible with 3.6.2 will require some additional configuration
 
 # SETUP DATABASE
 mysql --host=$DB_PORT_3306_TCP_ADDR --port=3306 --user=$ADMIN --password=$ADMIN_PASSWORD -e "CREATE DATABASE $FEDORA_DB default character set utf8;"
