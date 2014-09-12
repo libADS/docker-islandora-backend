@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t lyrdts/fedora:latest .
+docker build -t islandora/backend:latest .

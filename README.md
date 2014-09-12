@@ -70,27 +70,27 @@ This greatly increases the speed of building (and particularly rebuilding) image
 Build:
 
 ```
-docker build -t lyrdts/fedora:latest .
+docker build -t islandora/backend:latest .
 ```
 
 Run:
 
 ```
-docker run -i -t -p 8080:8080 --name fedora --link mysql:db lyrdts/fedora:latest # foreground
-docker run -d -p 8080:8080 --name fedora --link mysql:db lyrdts/fedora:latest # background
+docker run -i -t -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest # foreground
+docker run -d -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest # background
 ```
 
 Run from within the container:
 
 ```
-docker run -i -t -p 8080:8080 --name fedora --link mysql:db lyrdts/fedora:latest /bin/bash
+docker run -i -t -p 8080:8080 --name fedora --link mysql:db islandora/backend:latest /bin/bash
 ./setup.sh &
 ```
 
 Overriding:
 
 ```
-docker run -i -t -p 8080:8080 --name fedora --link mysql:db -e "SOLR_PREFIX=apache-solr" -e "SOLR_VERSION=3.6.2" lyrdts/fedora:latest /bin/bash
+docker run -i -t -p 8080:8080 --name fedora --link mysql:db -e "SOLR_PREFIX=apache-solr" -e "SOLR_VERSION=3.6.2" islandora/backend:latest /bin/bash
 ```
 
 Running with provided script:
@@ -109,7 +109,7 @@ Running additional containers
 Map internal 8080 to a different host port and create a distinct database.
 
 ```
-docker run -i -t -p 8081:8080 --name fedora --link mysql:db -e "FEDORA_DB=fedora1" lyrdts/fedora:latest # foreground
+docker run -i -t -p 8081:8080 --name fedora1 --link mysql:db -e "FEDORA_DB=fedora1" islandora/backend:latest # foreground
 ```
 
 Test
@@ -118,6 +118,7 @@ Test
 Create an object:
 
 ```
+# using boot2docker you will need to use ip address to container not localhost i.e. 192.168.59.103
 curl -v -u fedoraAdmin:fedora -X POST http://localhost:8080/fedora/objects/months:1?label=January
 curl -v -u fedoraAdmin:fedora -X POST http://localhost:8081/fedora/objects/months:12?label=December # 2nd container
 ```
