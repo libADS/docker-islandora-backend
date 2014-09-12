@@ -42,12 +42,9 @@ RUN cp /fedoragsearch-2.6/fedoragsearch.war /var/lib/tomcat7/webapps/gsearch.war
 # SOLR
 RUN mkdir -p /opt/solr
 RUN mkdir -p /opt/data/solr
-ADD bin/apache-solr-3.6.2.tgz /solr-3.6.2
 ADD bin/solr-4.2.0.tgz /solr-4.2.0
 ADD bin/solr-iso639-filter-4.2.0-r20131208.jar /solr-iso639-filter-4.2.0.jar
-ADD configuration/solr/schema-3.6.2.xml /schema-3.6.2.xml
 ADD configuration/solr/schema-4.2.0.xml /schema-4.2.0.xml
-ADD configuration/solr/solrconfig-3.6.2.xml /solrconfig-3.6.2.xml
 ADD configuration/solr/solrconfig-4.2.0.xml /solrconfig-4.2.0.xml
 ADD configuration/solr/solr-context.xml /solr-context.xml
 RUN cp /solr-context.xml /var/lib/tomcat7/conf/Catalina/localhost/solr.xml

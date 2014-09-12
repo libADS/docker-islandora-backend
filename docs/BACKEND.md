@@ -67,7 +67,6 @@ Solr
 **schema-version.xml**
 
 - Versioned schema file for SOLR
-- Updated per: https://github.com/discoverygarden/basic-solr-config/wiki/Guide-to-Setting-up-GSearch-2.7-with-Solr-4.2.0.
 
 _Examples:_
 
@@ -76,9 +75,7 @@ _Examples:_
 **solrconfig-version.xml**
 
 - Versioned solrconfig file for SOLR
-- Updated per: https://github.com/discoverygarden/basic-solr-config/wiki/Guide-to-Setting-up-GSearch-2.7-with-Solr-4.2.0.
 - Updated lib path entries
-- Commented out Analysis Request Handler
 
 _Examples:_
 
