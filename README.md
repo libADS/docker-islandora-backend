@@ -99,7 +99,8 @@ Running with provided script:
 Requires MySQL container.
 
 ```
-./build_and_run.sh # start MySQL, build and run in background
+./build.sh # build the container
+./run.sh # run mysql and fedora etc. in background
 ```
 
 Running additional containers
