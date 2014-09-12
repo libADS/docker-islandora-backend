@@ -4,11 +4,10 @@ Backend
 Backend files involved with frontend application behavior:
 
 - islandora_transforms (repository)
-- capture_collection_heirarchy.xsl
-- foxmlToSolr.xslt
-- slurp_all_MODS_to_solr.xslt
-- schema.xml
-- solrconfig.xml
+- foxmlToSolr.xslt (ryerson)
+- slurp_all_MODS_to_solr.xslt (ryerson)
+- schema.xml (ryerson)
+- solrconfig.xml (ryerson)
 
 Gsearch
 -----------
@@ -23,23 +22,12 @@ _Examples:_
 
 - https://github.com/FLVC/islandora_transforms
 
-**capture_collection_heirarchy.xsl**
-
-Contains query to retrieve parent PID.
-
-_Notes:_
-
-- Templated for Ansible configuration.
-- Has xsl:text with uri that needs to have the path set correctly.
-- Path set to /fedora for Docker.
-
 **foxmlToSolr.xslt**
 
 Transform Fedora foxml to SOLR leveraging the islandora_transforms stylesheets.
 
 _Notes:_
 
-- Templated for Ansible configuration. 
 - Has multiple xsl:include elements that needs to have the path set correctly.
 - Paths set to /var/lib/tomcat7 for Docker.
 
@@ -53,7 +41,6 @@ Sounds like it converts all MODS elements to SOLR =)
 
 _Notes:_
 
-- Templated for Ansible configuration.
 - Has an xsl:include that needs to have the path set correctly.
 - Path set to /var/lib/tomcat7 for Docker.
 

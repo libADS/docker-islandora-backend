@@ -56,7 +56,6 @@ cd $CATALINA_BASE/webapps/gsearch/FgsConfig && ant -f fgsconfig-basic.xml -Dloca
 
 git clone $ISL_TRANSFORMS $CATALINA_BASE/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms
 cp /slurp_all_MODS_to_solr.xslt $CATALINA_BASE/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/slurp_all_MODS_to_solr.xslt
-cp /capture_collection_heirarchy.xsl $CATALINA_BASE/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/capture_collection_heirarchy.xsl
 cp /foxmlToSolr.xslt $CATALINA_BASE/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/foxmlToSolr.xslt
 
 cp /gsearch_extensions-0.1.0.jar $CATALINA_BASE/webapps/gsearch/WEB-INF/lib

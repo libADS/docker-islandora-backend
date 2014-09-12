@@ -32,7 +32,6 @@ ADD bin/gsearch_extensions-0.1.0.jar /gsearch_extensions-0.1.0.jar
 ADD bin/gsearch_extensions-0.1.0-jar-with-dependencies.jar /gsearch_extensions-0.1.0-jar-with-dependencies.jar
 ADD configuration/gsearch/fedora-users.xml /fedora-users.xml
 ADD configuration/gsearch/fgsconfig-basic-for-islandora.properties /fgsconfig-basic-for-islandora.properties
-ADD configuration/gsearch/capture_collection_heirarchy.xsl /capture_collection_heirarchy.xsl
 ADD configuration/gsearch/foxmlToSolr.xslt /foxmlToSolr.xslt
 ADD configuration/gsearch/slurp_all_MODS_to_solr.xslt /slurp_all_MODS_to_solr.xslt
 ADD bin/fedoragsearch-2.6.zip /fedoragsearch-2.6.zip

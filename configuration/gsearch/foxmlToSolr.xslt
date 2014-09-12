@@ -39,13 +39,13 @@
   <xsl:variable name="HOST">localhost</xsl:variable>
   <xsl:variable name="PORT">8080</xsl:variable>
   <xsl:variable name="PID" select="/foxml:digitalObject/@PID"/>
-
+  <xsl:variable name="FEDORA" xmlns:java_string="xalan://java.lang.String" select="substring($FEDORASOAP, 1, java_string:lastIndexOf(java_string:new(string($FEDORASOAP)), '/'))"/>
 
   <!--
   This xslt stylesheet generates the IndexDocument consisting of IndexFields
     from a FOXML record. The IndexFields are:
       - from the root element = PID
-      - from foxml:property   = type, state, contentModcel, ...
+      - from foxml:property   = type, state, contentModel, ...
       - from oai_dc:dc        = title, creator, ...
     The IndexDocument element gets a PID attribute, which is mandatory,
     while the PID IndexField is optional.
@@ -55,7 +55,24 @@
      disable the ones you do not want to perform;
      the paths may need to be updated if the standard install was not followed
      TODO: look into a way to make these paths relative -->
-  <!-- was: /usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/fgsconfigFinal/index/gsearch_solr/ -->
+
+     <!-- older gsearches (slurp_all_MODS_to_solr also contains an include that would need to be
+     altered if you use these)-->
+     <!--
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/DC_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/RELS-EXT_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/RELS-INT_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/FOXML_properties_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/datastream_id_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/slurp_all_MODS_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/MODS_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/EACCPF_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/TEI_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/text_to_solr.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/XML_to_one_solr_field.xslt"/>
+  <xsl:include href="/usr/local/fedora/tomcat/webapps/fedoragsearch/WEB-INF/classes/config/index/gsearch_solr/islandora_transforms/XML_text_nodes_to_solr.xslt"/>
+    -->
+
   <xsl:include href="/var/lib/tomcat7/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/DC_to_solr.xslt"/>
   <xsl:include href="/var/lib/tomcat7/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/RELS-EXT_to_solr.xslt"/>
   <xsl:include href="/var/lib/tomcat7/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/RELS-INT_to_solr.xslt"/>
@@ -68,8 +85,10 @@
   <xsl:include href="/var/lib/tomcat7/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/text_to_solr.xslt"/>
   <xsl:include href="/var/lib/tomcat7/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/XML_to_one_solr_field.xslt"/>
   <xsl:include href="/var/lib/tomcat7/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/XML_text_nodes_to_solr.xslt"/>
-  <xsl:include href="/var/lib/tomcat7/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/capture_collection_heirarchy.xsl"/>
-
+  <!-- Used for indexing other objects.
+  <xsl:include href="/var/lib/tomcat7/webapps/gsearch/WEB-INF/classes/fgsconfigFinal/index/FgsIndex/islandora_transforms/library/traverse-graph.xslt"/>
+  -->
+  
   <!-- Decide which objects to modify the index of -->
   <xsl:template match="/">
     <update>
@@ -94,7 +113,7 @@
   <!-- Index an object -->
   <xsl:template match="/foxml:digitalObject" mode="indexFedoraObject">
     <xsl:param name="PID"/>
-
+    <add>
     <doc>
       <!-- put the object pid into a field -->
       <field name="PID">
@@ -104,7 +123,6 @@
       <!-- These templates are in the islandora_transforms -->
       <xsl:apply-templates select="foxml:objectProperties/foxml:property"/>
       <xsl:apply-templates select="/foxml:digitalObject" mode="index_object_datastreams"/>
-      <xsl:apply-templates select="/foxml:digitalObject" mode="capture_collection_heirarchy"/>
 
       <!-- THIS IS SPARTA!!!
         These lines call a matching template on every datastream id so that you only have to edit included files
@@ -112,7 +130,7 @@
         The datastream level element is used for matching,
         making it imperative to use the $content parameter for xpaths in templates
         if they are to support managed datstreams -->
-
+        
       <!-- TODO: would like to get rid of the need for the content param -->
       <xsl:for-each select="foxml:datastream">
         <xsl:choose>
@@ -131,8 +149,13 @@
               <xsl:with-param name="content" select="document(concat($PROT, '://', encoder:encode($FEDORAUSER), ':', encoder:encode($FEDORAPASS), '@', $HOST, ':', $PORT, '/fedora/objects/', $PID, '/datastreams/', @ID, '/content'))"/>
             </xsl:apply-templates>
           </xsl:when>
-          <!-- non-xml managed datastreams -->
-          <xsl:when test="@CONTROL_GROUP='M'">
+          <!-- non-xml managed datastreams...
+
+               Really, should probably only
+               handle the mimetypes supported by the "getDatastreamText" call:
+               https://github.com/fcrepo/gsearch/blob/master/FedoraGenericSearch/src/java/dk/defxws/fedoragsearch/server/TransformerToText.java#L185-L200
+          -->
+            <xsl:when test="@CONTROL_GROUP='M' and foxml:datastreamVersion[last() and not(starts-with(@MIMETYPE, 'image') or starts-with(@MIMETYPE, 'audio') or starts-with(@MIMETYPE, 'video'))]">
             <!-- TODO: should do something about mime type filtering
               text/plain should use the getDatastreamText extension because document will only work for xml docs
               xml files should use the document function
@@ -156,8 +179,26 @@
         <xsl:with-param name="suffix">_s</xsl:with-param>
       </xsl:apply-templates>
       -->
+      
+      <!-- Apache Tika -->
+      <xsl:for-each select="foxml:datastream[@CONTROL_GROUP='M' or @CONTROL_GROUP='E' or @CONTROL_GROUP='R']">
+        <xsl:value-of disable-output-escaping="yes" select="exts:getDatastreamFromTika($PID, $REPOSITORYNAME, @ID, 'field', concat('ds.', @ID), concat('dsmd_', @ID, '.'), '', $FEDORASOAP, $FEDORAUSER, $FEDORAPASS, $TRUSTSTOREPATH, $TRUSTSTOREPASS)"/>
+      </xsl:for-each>
 
+      <!-- Creating an index field with all text from the foxml record and its datastream -->
+
+      <field name="foxml.all.text">
+        <xsl:for-each select="//text()">
+          <xsl:value-of select="."/>
+          <xsl:text>&#160;</xsl:text>
+        </xsl:for-each>
+        <xsl:for-each select="//foxml:datastream[@CONTROL_GROUP='M' or @CONTROL_GROUP='E' or @CONTROL_GROUP='R']">
+          <xsl:value-of select="exts:getDatastreamText($PID, $REPOSITORYNAME, @ID, $FEDORASOAP, $FEDORAUSER, $FEDORAPASS, $TRUSTSTOREPATH, $TRUSTSTOREPASS)"/>
+          <xsl:text>&#160;</xsl:text>
+        </xsl:for-each>
+      </field>
     </doc>
+  </add>
   </xsl:template>
 
   <!-- Delete the solr doc of an object -->
@@ -172,5 +213,7 @@
 
   <!-- This prevents text from just being printed to the doc without field elements JUST TRY COMMENTING IT OUT -->
   <xsl:template match="text()"/>
-
+  <xsl:template match="text()" mode="indexFedoraObject"/>
+  <xsl:template match="text()" mode="unindexFedoraObject"/>
+  <xsl:template match="text()" mode="index_object_datastreams"/>
 </xsl:stylesheet>
