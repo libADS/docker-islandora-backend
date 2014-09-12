@@ -1,7 +1,7 @@
 Docker Islandora Backend
 ================
 
-Runs Fedora, Gseach and Solr inside Tomcat in a Docker container with configuration for Islandora.
+Runs Fedora, Gseach and Solr inside Tomcat in a Docker container with configuration for Islandora. The goal is for this to function as a minimal, functional `backend` service for testing with Islandora.
 
 Binary default versions:
 -------------------------------
